@@ -14,6 +14,7 @@ class CalculateViewController: UIViewController {
     @IBOutlet weak var weightLabel: UILabel!
     var height: Double = 1.5
     var weight: Double = 100
+    var bmi: Double = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,9 +32,14 @@ class CalculateViewController: UIViewController {
     }
     
     @IBAction func calculateBmi(_ sender: UIButton) {
-        print(weight/pow(height, 2))
-        
-        let next = ResultViewController()
-        self.present(next, animated: true, completion: nil)
+        bmi = weight/pow(height, 2)
+        self.performSegue(withIdentifier: "showResult", sender: self)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "showResult" {
+            let destination = segue.destination as! ResultViewController
+            destination.bmi = String(format: "%.1f", bmi)
+        }
     }
 }
